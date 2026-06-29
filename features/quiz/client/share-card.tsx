@@ -102,7 +102,7 @@ export function ShareCard({
       {/* 9:16 story-ready card (this exact node is exported to PNG) */}
       <div
         ref={cardRef}
-        className="relative aspect-[9/16] w-full max-w-[300px] overflow-hidden rounded-[1.75rem] px-6 py-7 text-center"
+        className="relative aspect-[9/16] w-full max-w-[340px] overflow-hidden rounded-[1.75rem] px-5 py-5 text-center"
         style={{
           background: "linear-gradient(160deg, #0e3a20 0%, #0c2c18 50%, #0a2113 100%)",
         }}
@@ -112,46 +112,49 @@ export function ShareCard({
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "radial-gradient(72% 42% at 50% 14%, rgba(244,199,120,0.22), transparent 62%)",
+              "radial-gradient(72% 40% at 50% 16%, rgba(244,199,120,0.20), transparent 60%)",
           }}
         />
         <div className="relative flex h-full flex-col">
           {/* Top */}
-          <div className="flex flex-col items-center gap-1.5">
-            <span className="font-serif text-xl tracking-wide text-primary">
+          <div className="flex flex-col items-center gap-1">
+            <span className="font-serif text-lg tracking-wide text-primary">
               FarKhadi
             </span>
-            <span className="text-[9px] uppercase tracking-[0.3em] text-primary/70">
+            <span className="text-[8px] uppercase tracking-[0.3em] text-primary/70">
               {L(QUIZ_UI.shareLabel)}
             </span>
           </div>
 
           {/* Main */}
-          <div className="flex flex-1 flex-col items-center justify-center gap-2.5">
-            <span className="text-[11px] uppercase tracking-[0.22em] text-brand-cream/60">
+          <div className="flex flex-1 flex-col items-center justify-center gap-1.5">
+            <span className="text-[10px] uppercase tracking-[0.2em] text-brand-cream/60">
               {L(QUIZ_UI.shareMyResult)}
             </span>
-            <span className="text-[3.5rem] leading-none">{archetype.emoji}</span>
-            <span className="font-serif text-2xl font-semibold uppercase leading-tight tracking-wide text-primary">
+            <span className="text-[2.6rem] leading-none">{archetype.emoji}</span>
+            <span className="font-serif text-xl font-semibold uppercase leading-tight tracking-wide text-primary">
               {L(archetype.name)}
             </span>
-            <div className="mt-1.5">
-              <p className="text-[11px] uppercase tracking-[0.22em] text-brand-cream/60">
+            <div className="mt-1">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-brand-cream/60">
                 {L(QUIZ_UI.shareMatch)}
               </p>
-              <p className="font-serif text-xl text-brand-cream">{name}</p>
+              <p className="font-serif text-lg text-brand-cream">{name}</p>
             </div>
-            <p className="mt-2 max-w-[15rem] text-sm italic leading-relaxed text-brand-cream/85">
+            <p className="mt-1.5 max-w-[14rem] text-[13px] italic leading-snug text-brand-cream/85">
               “{L(archetype.personality)}”
             </p>
           </div>
 
           {/* Bottom */}
-          <div className="flex flex-col items-center gap-0.5 border-t border-primary/20 pt-4">
-            <span className="font-serif text-base text-primary">
-              {L(QUIZ_UI.shareCtaTitle)} {L(QUIZ_UI.shareCtaSub)}
+          <div className="flex flex-col items-center gap-0.5 border-t border-primary/20 pt-3">
+            <span className="font-serif text-sm text-primary">
+              {L(QUIZ_UI.shareCtaTitle)}
             </span>
-            <span className="font-mono text-[11px] tracking-wide text-brand-cream/75">
+            <span className="text-[11px] text-brand-cream/70">
+              {L(QUIZ_UI.shareCtaSub)}
+            </span>
+            <span className="mt-0.5 font-mono text-[10px] tracking-wide text-brand-cream/70">
               {host}
             </span>
           </div>
@@ -159,7 +162,7 @@ export function ShareCard({
       </div>
 
       {/* Actions */}
-      <div className="flex w-full max-w-[300px] flex-col gap-3">
+      <div className="flex w-full max-w-[340px] flex-col gap-3">
         <Button
           onClick={shareToInstagram}
           disabled={busy}
