@@ -31,9 +31,9 @@ export const uz = {
     new: "Yangi",
   },
   hero: {
-    title: "Sizning kayfiyatingiz chiroyli hidlansin",
+    title: "Kayfiyatingiz chiroyli ifor taratsin",
     subtitle:
-      "Har bir flakon — bu hikoya, his va kayfiyat, bir tomchida jamlangan. Fransiyaning noyob notalari, faqat FarKhadida.",
+      "Har bir flakon — bir hikoya, bir his va kayfiyat, bir tomchida jamlangan. Fransiyaning noyob notalari — faqat FarKhadida.",
     cta: "Kolleksiyani ko‘rish",
     secondary: "Hadicha hikoyasi",
   },
@@ -48,9 +48,9 @@ export const uz = {
   },
   featured: {
     eyebrow: "Kolleksiya",
-    title: "Hali his qilmagan ifolaringiz",
+    title: "Hali his qilmagan iforlaringiz",
     subtitle:
-      "Har bir aromat — alohida kayfiyat. Birini tanlang yoki butun olamni kashf eting.",
+      "Har bir ifor — alohida kayfiyat. O‘zingiznikini tanlang yoki butun bir olamni kashf eting.",
     viewAll: "Barcha atirlar",
   },
   story: {
@@ -84,7 +84,7 @@ export const uz = {
     ],
   },
   product: {
-    notesTitle: "Aromat piramidasi",
+    notesTitle: "Ifor piramidasi",
     topNotes: "Yuqori notalar",
     heartNotes: "Yurak notalari",
     baseNotes: "Bazaviy notalar",
@@ -98,7 +98,7 @@ export const uz = {
   catalog: {
     title: "Kolleksiya",
     subtitle: "FarKhadi premium atirlari — har biri 30 ml.",
-    count: "ta aromat",
+    count: "ta ifor",
   },
   cart: {
     title: "Savatcha",
@@ -138,12 +138,12 @@ export const uz = {
   },
   about: {
     eyebrow: "Asoschimiz",
-    title: "Hadicha — orzusi chiroyli hidlanadigan qiz",
+    title: "Sakkiz yoshli orzu",
     intro:
-      "Bu mening hikoyamning boshlanishi. Mening ismim Hadicha va men 8 yoshimda o‘z biznesimni ochdim.",
-    p1: "Men orzu qilishni juda yaxshi ko‘raman. Bir kuni o‘zimning aromatimni — chiroyli, alohida, Fransiyadan kelgan yangi notalar bilan yaratishni qaror qildim. 🇫🇷",
-    p2: "Shunday qilib FarKhadi paydo bo‘ldi. Har bir flakon — mening harakatim, ishonchim va quvonchimning bir bo‘lagi.",
-    p3: "Pusть hayotingiz ham ertakdek chiroyli bo‘lsin, har bir ifor esa go‘zal kayfiyat va eng chiroyli hislar olib kelsin.",
+      "Bu — mening hikoyamning boshlanishi. Mening ismim Hadicha va men 8 yoshimda o‘z biznesimni ochdim.",
+    p1: "Men orzu qilishni juda yaxshi ko‘raman. Bir kuni o‘zimning iforimni — chiroyli, o‘ziga xos, to‘g‘ridan-to‘g‘ri Fransiyadan kelgan yangi notalar bilan yaratishga qaror qildim. 🇫🇷",
+    p2: "Shunday qilib FarKhadi paydo bo‘ldi. Har bir flakon — mening mehnatim, ishonchim va quvonchimning bir bo‘lagi.",
+    p3: "Hayotingiz ham ertakdek go‘zal bo‘lsin, har bir ifor esa sizga go‘zal kayfiyat va eng chiroyli hislarni hadya etsin.",
     galleryTitle: "Hadicha lahzalari",
     cta: "Kolleksiyani kashf eting",
   },

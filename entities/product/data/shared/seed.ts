@@ -147,25 +147,25 @@ export const SEED_PRODUCTS: Product[] = [
     slug: "creation",
     name: { uz: "Creation", ru: "Creation" },
     tagline: {
-      uz: "Suvli gulli, nafis yangilanish",
-      ru: "Водный цветочный, утончённое обновление",
+      uz: "Qarama-qarshiliklar uyg‘unligi",
+      ru: "Гармония контрастов",
     },
     description: {
-      uz: "Creation — qora smorodina va amber uchqunlari atirgul va jasminning nafis yuragiga ochiladigan suvli gulli ifor. Sandal va mox bilan toza, zamonaviy yakun.",
-      ru: "Creation — водный цветочный аромат, где искры чёрной смородины и амбры раскрываются в изящном сердце из розы и жасмина. Чистый, современный финал из сандала и мха.",
+      uz: "Creation — qarama-qarshiliklar uyg‘unligi tug‘iladigan ifor: asal va yashil notalarning mayin ochilishi, to‘yingan gulli yuragi hamda chuqur, iliq yakuni. Jasur, murakkab va esda qoladigan.",
+      ru: "Creation — аромат, в котором рождается гармония контрастов: мягкое медово-зелёное вступление, насыщенное цветочное сердце и глубокий, тёплый шлейф. Смелый, сложный и запоминающийся.",
     },
     notes: {
       top: {
-        uz: ["Qora smorodina", "Amber akkordi"],
-        ru: ["Чёрная смородина", "Аккорд амбры"],
+        uz: ["Asal", "Qora smorodina bargi", "Neroli", "Iris ildizi"],
+        ru: ["Мёд", "Лист чёрной смородины", "Нероли", "Корень ириса"],
       },
       heart: {
-        uz: ["Atirgul", "Jasmin", "Apelsin guli"],
-        ru: ["Роза", "Жасмин", "Цветок апельсина"],
+        uz: ["Chinnigul", "Tuberoza", "Atirgul", "Jasmin"],
+        ru: ["Гвоздика", "Тубероза", "Роза", "Жасмин"],
       },
       base: {
-        uz: ["Sandal daraxti", "Eman moxi", "Mushk"],
-        ru: ["Сандал", "Дубовый мох", "Мускус"],
+        uz: ["Eman moxi", "Pachuli", "Amber", "Mushk"],
+        ru: ["Дубовый мох", "Пачули", "Амбра", "Мускус"],
       },
     },
     price: DEFAULT_PRICE,
