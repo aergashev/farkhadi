@@ -9,10 +9,10 @@ import { useDict } from "@/providers/lib/i18n/client"
 import { SocialLinks } from "@/app/_components/social-links"
 
 const GALLERY = [
-  "/founder/IMG_5117.jpg",
-  "/founder/IMG_5124.jpg",
+  "/founder/new1.jpg",
+  "/founder/new2.jpg",
+  "/founder/new3.jpg",
   "/founder/IMG_5167.jpg",
-  "/founder/IMG_5173.jpg",
 ]
 
 export default function AboutPage() {
@@ -38,7 +38,7 @@ export default function AboutPage() {
         </div>
         <div className="relative mx-auto aspect-[4/5] w-full max-w-md overflow-hidden rounded-[2rem] border border-primary/20 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.8)]">
           <Image
-            src="/founder/IMG_5173.jpg"
+            src="/founder/new2.jpg"
             alt="Hadicha"
             fill
             priority

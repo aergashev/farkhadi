@@ -57,7 +57,7 @@ export function Hero() {
         <div className="relative">
           <div className="relative mx-auto aspect-[4/5] w-full max-w-md overflow-hidden rounded-[2rem] border border-primary/20 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.8)]">
             <Image
-              src="/founder/IMG_5117.jpg"
+              src="/founder/new3.jpg"
               alt="FarKhadi — Hadicha"
               fill
               priority
