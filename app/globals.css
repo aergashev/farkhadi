@@ -1,0 +1,163 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+  FarKhadi premium brand palette
+  - To'q yashil (dark green) #135029 — royal, premium background
+  - Oltin sariq (gold)       #f4c778 — luxury accent / primary
+  - Qora #000  ·  Oq #fff
+  The whole storefront uses one elegant dark-green theme with gold accents.
+*/
+:root,
+.dark {
+  --radius: 0.5rem;
+
+  --brand-green: #135029;
+  --brand-green-deep: #0c3019;
+  --brand-gold: #f4c778;
+  --brand-gold-soft: #e9d4a3;
+  --brand-cream: #f5efe1;
+
+  --background: #0c2c18;
+  --foreground: #f5efe1;
+
+  --card: #103b22;
+  --card-foreground: #f5efe1;
+  --popover: #103b22;
+  --popover-foreground: #f5efe1;
+
+  --primary: #f4c778;
+  --primary-foreground: #0c2c18;
+
+  --secondary: #16462a;
+  --secondary-foreground: #f5efe1;
+
+  --muted: #16462a;
+  --muted-foreground: #c8bb98;
+
+  --accent: #1a512f;
+  --accent-foreground: #f4c778;
+
+  --destructive: #e05a4d;
+
+  --border: rgba(244, 199, 120, 0.16);
+  --input: rgba(244, 199, 120, 0.22);
+  --ring: #f4c778;
+
+  --chart-1: #f4c778;
+  --chart-2: #e9d4a3;
+  --chart-3: #2e7d4f;
+  --chart-4: #135029;
+  --chart-5: #c8bb98;
+
+  --sidebar: #0c3019;
+  --sidebar-foreground: #f5efe1;
+  --sidebar-primary: #f4c778;
+  --sidebar-primary-foreground: #0c2c18;
+  --sidebar-accent: #16462a;
+  --sidebar-accent-foreground: #f4c778;
+  --sidebar-border: rgba(244, 199, 120, 0.16);
+  --sidebar-ring: #f4c778;
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --font-heading: var(--font-serif);
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
+  --color-brand-green: var(--brand-green);
+  --color-brand-green-deep: var(--brand-green-deep);
+  --color-brand-gold: var(--brand-gold);
+  --color-brand-gold-soft: var(--brand-gold-soft);
+  --color-brand-cream: var(--brand-cream);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  .font-heading {
+    @apply font-serif;
+    font-feature-settings: "liga" 1, "dlig" 1;
+  }
+}
+
+@utility container-px {
+  @apply mx-auto w-full max-w-7xl px-5 sm:px-8;
+}
+
+/* subtle gold hairline used across premium sections */
+@utility gold-rule {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--brand-gold) 50%,
+    transparent
+  );
+}
+
+::selection {
+  background: var(--brand-gold);
+  color: var(--brand-green-deep);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}

@@ -1,0 +1,47 @@
+// FarKhadi data model — Postgres (Neon on Vercel).
+// Bilingual / nested fields are stored as JSON so they map 1:1 to the app types.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  // Direct (non-pooled) connection used for `prisma db push` / migrations.
+  // Falls back to DATABASE_URL when unset.
+  directUrl = env("DIRECT_URL")
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        Json // { uz, ru }
+  tagline     Json // { uz, ru }
+  description Json // { uz, ru }
+  notes       Json // { top:{uz,ru}, heart:{uz,ru}, base:{uz,ru} }
+  price       Int
+  volumeMl    Int      @default(30)
+  image       String
+  accent      String   @default("#c9a24b")
+  active      Boolean  @default(true)
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+model Order {
+  id              String   @id @default(cuid())
+  number          String   @unique
+  customerName    String
+  customerPhone   String
+  customerAddress String
+  customerComment String?
+  items           Json // OrderItem[]
+  total           Int
+  status          String   @default("new")
+  createdAt       DateTime @default(now())
+
+  @@index([createdAt])
+}
