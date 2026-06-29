@@ -6,7 +6,9 @@ import { ArrowRight, Sparkles } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { useDict } from "@/providers/lib/i18n/client"
+import { useDict, useI18n } from "@/providers/lib/i18n/client"
+import { pickLocale } from "@/shared/lib/format"
+import { QUIZ_UI } from "@/features/quiz/shared"
 
 export function Hero() {
   const dict = useDict()
@@ -176,6 +178,40 @@ export function StoryTeaser() {
               <ArrowRight className="size-4" />
             </Link>
           </Button>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export function QuizTeaser() {
+  const { locale } = useI18n()
+  const L = <T,>(v: Record<"uz" | "ru", T>) => pickLocale(v, locale)
+  return (
+    <section className="container-px py-10">
+      <div className="relative overflow-hidden rounded-3xl border border-primary/25 bg-brand-green-deep px-6 py-12 text-center sm:py-16">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(60% 60% at 50% 0%, rgba(244,199,120,0.16), transparent 65%)",
+          }}
+        />
+        <div className="relative mx-auto max-w-xl space-y-5">
+          <p className="text-2xl tracking-[0.3em]">🌸 🎼 🌙 🌊 ⚡</p>
+          <h2 className="font-serif text-3xl sm:text-4xl">{L(QUIZ_UI.teaserTitle)}</h2>
+          <p className="text-muted-foreground">{L(QUIZ_UI.teaserSubtitle)}</p>
+          <div className="flex flex-col items-center gap-3">
+            <Button
+              asChild
+              size="lg"
+              className="bg-primary px-8 font-medium text-primary-foreground hover:bg-primary/90"
+            >
+              <Link href="/quiz">{L(QUIZ_UI.start)}</Link>
+            </Button>
+            <p className="text-xs text-muted-foreground">{L(QUIZ_UI.teaserNote)}</p>
+          </div>
         </div>
       </div>
     </section>

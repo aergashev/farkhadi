@@ -9,6 +9,7 @@ export const ru: Dictionary = {
   nav: {
     home: "Главная",
     catalog: "Каталог",
+    quiz: "Тест ароматов",
     about: "О Хадиче",
     cart: "Корзина",
     admin: "Управление",

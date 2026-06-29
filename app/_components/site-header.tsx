@@ -20,6 +20,7 @@ export function SiteHeader() {
   const links = [
     { href: "/", label: dict.nav.home },
     { href: "/catalog", label: dict.nav.catalog },
+    { href: "/quiz", label: dict.nav.quiz },
     { href: "/about", label: dict.nav.about },
   ]
 

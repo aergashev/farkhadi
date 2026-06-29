@@ -7,6 +7,7 @@ export const uz = {
   nav: {
     home: "Bosh sahifa",
     catalog: "Katalog",
+    quiz: "Ifor testi",
     about: "Hadicha haqida",
     cart: "Savatcha",
     admin: "Boshqaruv",

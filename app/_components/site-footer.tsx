@@ -35,6 +35,11 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
+              <Link href="/quiz" className="transition hover:text-primary">
+                {dict.nav.quiz}
+              </Link>
+            </li>
+            <li>
               <Link href="/about" className="transition hover:text-primary">
                 {dict.nav.about}
               </Link>

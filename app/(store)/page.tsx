@@ -8,6 +8,7 @@ import { ProductGrid } from "./_components/product-grid"
 import {
   Hero,
   Marquee,
+  QuizTeaser,
   SectionHeading,
   StoryTeaser,
   Values,
@@ -49,6 +50,7 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <QuizTeaser />
       <Values />
       <StoryTeaser />
     </>
