@@ -153,9 +153,9 @@ export const uz = {
     contact: "Bog‘lanish",
     phone: "+998 94 995 11 17",
     orderText: "Buyurtma berish va batafsil ma’lumot uchun bog‘laning:",
-    follow: "Bizni kuzating",
     rights: "Barcha huquqlar himoyalangan.",
     madeWith: "Sevgi bilan yaratilgan",
+    by: "—",
   },
   admin: {
     title: "Boshqaruv paneli",

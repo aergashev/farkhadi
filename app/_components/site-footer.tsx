@@ -5,7 +5,7 @@ import { Phone } from "lucide-react"
 
 import { useDict } from "@/providers/lib/i18n/client"
 import { Logo } from "./logo"
-import { SocialLinks, SOCIALS } from "./social-links"
+import { SocialLinks } from "./social-links"
 
 export function SiteFooter() {
   const dict = useDict()
@@ -54,24 +54,16 @@ export function SiteFooter() {
             <Phone className="size-4 text-primary" />
             {dict.footer.phone}
           </a>
-          <div className="pt-2">
-            <p className="text-sm text-muted-foreground">{dict.footer.follow}</p>
-            <a
-              href={SOCIALS.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-brand-cream transition hover:text-primary"
-            >
-              {SOCIALS.handle}
-            </a>
-          </div>
         </div>
       </div>
 
       <div className="border-t border-border/50">
         <div className="container-px flex flex-col items-center justify-between gap-2 py-5 text-xs text-muted-foreground sm:flex-row">
           <p>© 2026 FarKhadi. {dict.footer.rights}</p>
-          <p>{dict.footer.madeWith} 🤍</p>
+          <p>
+            {dict.footer.madeWith} 🤍 {dict.footer.by}{" "}
+            <span className="font-medium text-brand-cream">OQIM Group</span>
+          </p>
         </div>
       </div>
     </footer>
