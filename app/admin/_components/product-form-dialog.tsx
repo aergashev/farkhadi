@@ -2,6 +2,8 @@
 
 import { useRef, useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
+import { ImagePlus } from "lucide-react"
 import { toast } from "sonner"
 
 import {
@@ -20,6 +22,7 @@ import { useDict } from "@/providers/lib/i18n/client"
 import { upsertProductAction } from "@/entities/product/data/server/actions"
 import type { Product } from "@/entities/product/data/shared/types"
 import { DEFAULT_PRICE } from "@/entities/product/data/shared/types"
+import { ImageCropper, type CroppedImage } from "./image-cropper"
 
 export function ProductFormDialog({
   product,
@@ -30,15 +33,41 @@ export function ProductFormDialog({
 }) {
   const dict = useDict()
   const router = useRouter()
-  const formRef = useRef<HTMLFormElement>(null)
+  const fileRef = useRef<HTMLInputElement>(null)
   const [open, setOpen] = useState(false)
   const [pending, startTransition] = useTransition()
 
+  // Image cropping state.
+  const [cropSrc, setCropSrc] = useState<string | null>(null)
+  const [cropped, setCropped] = useState<CroppedImage | null>(null)
+
   const join = (arr?: string[]) => (arr ?? []).join(", ")
+
+  const onPickFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) setCropSrc(URL.createObjectURL(file))
+    e.target.value = "" // allow re-picking the same file
+  }
+
+  const onCropDone = (result: CroppedImage) => {
+    if (cropped) URL.revokeObjectURL(cropped.url)
+    if (cropSrc) URL.revokeObjectURL(cropSrc)
+    setCropped(result)
+    setCropSrc(null)
+  }
+
+  const previewUrl = cropped?.url ?? product?.image ?? null
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
+    // Submit the cropped image (if any) under the `image` field.
+    if (cropped) {
+      formData.set(
+        "image",
+        new File([cropped.blob], "product.jpg", { type: "image/jpeg" }),
+      )
+    }
     startTransition(async () => {
       const result = await upsertProductAction(formData)
       if (result.ok) {
@@ -64,7 +93,7 @@ export function ProductFormDialog({
           </DialogTitle>
         </DialogHeader>
 
-        <form ref={formRef} onSubmit={onSubmit} className="space-y-5">
+        <form onSubmit={onSubmit} className="space-y-5">
           {product && <input type="hidden" name="id" value={product.id} />}
 
           <div className="grid gap-4 sm:grid-cols-2">
@@ -165,7 +194,7 @@ export function ProductFormDialog({
             ))}
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2">
             <div className={field}>
               <Label>{dict.admin.price}</Label>
               <Input
@@ -184,14 +213,53 @@ export function ProductFormDialog({
                 className={inputCls}
               />
             </div>
-            <div className={field}>
-              <Label>{dict.admin.image}</Label>
-              <Input
-                name="image"
-                type="file"
-                accept="image/*"
-                className={`${inputCls} file:mr-2 file:text-primary`}
-              />
+          </div>
+
+          {/* Image with crop */}
+          <div className={field}>
+            <Label>{dict.admin.image}</Label>
+            <div className="flex items-start gap-4">
+              <div className="relative aspect-[3/4] w-28 shrink-0 overflow-hidden rounded-lg border border-border bg-brand-green-deep">
+                {previewUrl ? (
+                  <Image
+                    src={previewUrl}
+                    alt="preview"
+                    fill
+                    sizes="112px"
+                    className="object-cover"
+                    unoptimized
+                  />
+                ) : (
+                  <div className="flex size-full items-center justify-center text-muted-foreground">
+                    <ImagePlus className="size-6" />
+                  </div>
+                )}
+              </div>
+              <div className="space-y-2">
+                <input
+                  ref={fileRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/avif"
+                  onChange={onPickFile}
+                  className="hidden"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => fileRef.current?.click()}
+                  className="gap-2 border-border hover:bg-accent hover:text-primary"
+                >
+                  <ImagePlus className="size-4" />
+                  {previewUrl ? dict.admin.changeImage : dict.admin.uploadImage}
+                </Button>
+                {cropped && (
+                  <p className="text-xs text-muted-foreground">
+                    {dict.admin.imageSize}: {cropped.width}×{cropped.height} ·{" "}
+                    {(cropped.blob.size / 1024).toFixed(0)} KB
+                  </p>
+                )}
+                <p className="text-xs text-muted-foreground">3:4 · JPEG/PNG/WebP</p>
+              </div>
             </div>
           </div>
 
@@ -228,6 +296,18 @@ export function ProductFormDialog({
           </div>
         </form>
       </DialogContent>
+
+      {cropSrc && (
+        <ImageCropper
+          src={cropSrc}
+          open
+          onCancel={() => {
+            URL.revokeObjectURL(cropSrc)
+            setCropSrc(null)
+          }}
+          onDone={onCropDone}
+        />
+      )}
     </Dialog>
   )
 }

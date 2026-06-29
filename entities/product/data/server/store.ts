@@ -78,11 +78,6 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
   return row ? toProduct(row) : null
 }
 
-export async function getProductById(id: string): Promise<Product | null> {
-  const row = await getPrisma().product.findUnique({ where: { id } })
-  return row ? toProduct(row) : null
-}
-
 /** Create or update a single product (keyed by id). */
 export async function upsertProduct(product: Product): Promise<void> {
   const data = toRow(product)

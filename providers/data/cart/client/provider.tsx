@@ -33,14 +33,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [lines, setLines] = useState<CartLine[]>([])
   const [hydrated, setHydrated] = useState(false)
 
-  // Hydrate from localStorage once on mount.
+  // One-time hydration from localStorage after mount. This must run in an
+  // effect (not a lazy initializer) so the first client render matches the
+  // server's empty cart and avoids a hydration mismatch.
   useEffect(() => {
+    let initial: CartLine[] = []
     try {
       const raw = localStorage.getItem(STORAGE_KEY)
-      if (raw) setLines(JSON.parse(raw) as CartLine[])
+      if (raw) initial = JSON.parse(raw) as CartLine[]
     } catch {
       // ignore corrupted storage
     }
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional one-time storage hydration
+    setLines(initial)
     setHydrated(true)
   }, [])
 
