@@ -50,19 +50,18 @@ Useful scripts: `npm run db:push`, `npm run db:studio`, `npm run typecheck`.
 
 1. **Push** the repo to GitHub and import it at [vercel.com/new](https://vercel.com/new).
 2. **Add a database** — in the project's *Storage* tab, connect **Neon Postgres**
-   from the Marketplace. This auto-injects `DATABASE_URL` / `DIRECT_URL`.
+   from the Marketplace. This auto-injects `DATABASE_URL`.
    _(CLI: `vercel integration add neon`.)_
 3. **Add Blob** — *Storage → Create → Blob*. Injects `BLOB_READ_WRITE_TOKEN`.
 4. **Set env vars** — add `ADMIN_PASSWORD`, `TELEGRAM_BOT_TOKEN`,
    `TELEGRAM_CHAT_ID` in *Settings → Environment Variables*.
-5. **Create the schema** — once the DB is connected:
-   ```bash
-   vercel env pull .env.local   # pull DATABASE_URL locally
-   npm run db:push              # push the Prisma schema to Neon
-   ```
-   (Or run `prisma db push` from any machine with the env vars.)
-6. **Deploy.** The build runs `prisma generate && next build`. Pages are
-   `force-dynamic`, so the storefront always reflects the latest products.
+5. **Redeploy.** The build runs `prisma generate && prisma db push && next build`,
+   so the schema is **created automatically** on deploy (no manual step). Pages
+   are `force-dynamic`, so the storefront always reflects the latest products,
+   and the catalogue self-seeds on first load.
+
+> `DIRECT_URL` is optional — only used to prefer an unpooled connection for the
+> schema push (Neon's `*_UNPOOLED` var is picked up automatically if present).
 
 Everything fits the **Hobby** plan: serverless functions (Fluid Compute), Neon
 free tier, and Blob free tier.
