@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { LogOut, Package, ShoppingCart } from "lucide-react"
+import { LogOut, Package, Sparkles, ShoppingCart } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -12,15 +12,19 @@ import { LanguageSwitcher } from "@/app/_components/language-switcher"
 import { Logo } from "@/app/_components/logo"
 import type { Product } from "@/entities/product/data/shared/types"
 import type { Order } from "@/entities/order/data/shared/types"
+import type { QuizStats } from "@/features/quiz/shared"
 import { ProductsManager } from "./products-manager"
 import { OrdersTable } from "./orders-table"
+import { QuizStatsPanel } from "./quiz-stats"
 
 export function AdminDashboard({
   products,
   orders,
+  quizStats,
 }: {
   products: Product[]
   orders: Order[]
+  quizStats: QuizStats
 }) {
   const dict = useDict()
   const newOrders = orders.filter((o) => o.status === "new").length
@@ -70,6 +74,10 @@ export function AdminDashboard({
                 </Badge>
               )}
             </TabsTrigger>
+            <TabsTrigger value="quiz" className="gap-2">
+              <Sparkles className="size-4" />
+              {dict.admin.tabsQuiz}
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="products" className="mt-6">
@@ -77,6 +85,9 @@ export function AdminDashboard({
           </TabsContent>
           <TabsContent value="orders" className="mt-6">
             <OrdersTable orders={orders} />
+          </TabsContent>
+          <TabsContent value="quiz" className="mt-6">
+            <QuizStatsPanel stats={quizStats} />
           </TabsContent>
         </Tabs>
       </div>

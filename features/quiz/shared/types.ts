@@ -11,11 +11,16 @@ export type ProductSlug =
   | "afternoon-swim"
   | "creation"
 
+export type Gender = "female" | "male"
+
+/** Weighted contribution of one answer to several perfumes. */
+export type Weights = Partial<Record<ProductSlug, number>>
+
 export type QuizOption = {
   emoji: string
   label: LB
-  /** The perfume this option points to. */
-  target: ProductSlug
+  /** Weighted points this option adds (primary + secondary leanings). */
+  weights: Weights
 }
 
 export type QuizQuestion = {
@@ -31,4 +36,23 @@ export type Archetype = {
   name: LB
   /** One warm personality sentence, shared by the result + share card. */
   personality: LB
+}
+
+export type QuizEventType = "started" | "finished" | "added_to_cart" | "shared"
+
+export const QUIZ_EVENT_TYPES: QuizEventType[] = [
+  "started",
+  "finished",
+  "added_to_cart",
+  "shared",
+]
+
+export type QuizStats = {
+  started: number
+  finished: number
+  addedToCart: number
+  shared: number
+  completionRate: number // 0..1
+  byGender: { female: number; male: number }
+  byProduct: { slug: ProductSlug; count: number }[]
 }

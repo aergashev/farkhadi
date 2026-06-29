@@ -1,8 +1,60 @@
-import type { Archetype, LB, ProductSlug, QuizQuestion } from "./types"
+import type {
+  Archetype,
+  Gender,
+  LB,
+  ProductSlug,
+  QuizQuestion,
+  Weights,
+} from "./types"
+
+/** Unisex perfumes are eligible for everyone; female-only for women. */
+export const UNISEX_SLUGS: ProductSlug[] = [
+  "creation",
+  "afternoon-swim",
+  "imagination",
+]
+export const FEMALE_ONLY_SLUGS: ProductSlug[] = ["gucci-gardena", "symphoniya"]
+
+/** Perfumes a user can be matched with, given their answer to the gender step. */
+export function eligibleFor(gender: Gender): ProductSlug[] {
+  return gender === "male"
+    ? UNISEX_SLUGS
+    : [...UNISEX_SLUGS, ...FEMALE_ONLY_SLUGS]
+}
 
 /**
- * The four questions: mood → aura → scene → style.
- * Each option adds +1 to its target perfume.
+ * Each answer leans primarily to one perfume (+2) and secondarily to a
+ * thematically adjacent one (+1). The secondary is always reachable by men
+ * (a unisex perfume), so a romantic/creative man still gets a sensible match.
+ */
+const LEAN: Record<ProductSlug, Weights> = {
+  "gucci-gardena": { "gucci-gardena": 2, imagination: 1 },
+  symphoniya: { symphoniya: 2, creation: 1 },
+  imagination: { imagination: 2, creation: 1 },
+  "afternoon-swim": { "afternoon-swim": 2, imagination: 1 },
+  creation: { creation: 2, imagination: 1 },
+}
+
+export const GENDER_QUESTION = {
+  title: { uz: "Ifor kim uchun?", ru: "Для кого аромат?" } as LB,
+  options: [
+    {
+      value: "female" as Gender,
+      emoji: "👩",
+      label: { uz: "Ayol uchun", ru: "Для женщины" } as LB,
+    },
+    {
+      value: "male" as Gender,
+      emoji: "👨",
+      label: { uz: "Erkak uchun", ru: "Для мужчины" } as LB,
+    },
+  ],
+}
+
+/**
+ * Four questions: mood → aura → scene → style.
+ * Emojis are varied per option and options are shuffled at runtime, so the
+ * mapping is never obvious from position or icon.
  */
 export const QUIZ_QUESTIONS: QuizQuestion[] = [
   {
@@ -13,28 +65,28 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     },
     options: [
       {
-        emoji: "🌸",
-        target: "gucci-gardena",
+        emoji: "💗",
+        weights: LEAN["gucci-gardena"],
         label: { uz: "Yumshoq, romantik, nafis", ru: "Мягкое, романтичное, нежное" },
       },
       {
-        emoji: "🌊",
-        target: "afternoon-swim",
+        emoji: "☀️",
+        weights: LEAN["afternoon-swim"],
         label: { uz: "Quyoshli, erkin, yengil", ru: "Солнечное, свободное, лёгкое" },
       },
       {
-        emoji: "🌙",
-        target: "imagination",
+        emoji: "🌌",
+        weights: LEAN.imagination,
         label: { uz: "Sirli, chuqur, jozibali", ru: "Загадочное, глубокое, притягательное" },
       },
       {
-        emoji: "🎼",
-        target: "symphoniya",
+        emoji: "🎨",
+        weights: LEAN.symphoniya,
         label: { uz: "Ijodkor, nozik, ilhomli", ru: "Творческое, тонкое, вдохновлённое" },
       },
       {
-        emoji: "⚡",
-        target: "creation",
+        emoji: "🔥",
+        weights: LEAN.creation,
         label: { uz: "Jasur, ishonchli, kuchli", ru: "Смелое, уверенное, сильное" },
       },
     ],
@@ -47,34 +99,34 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     },
     options: [
       {
-        emoji: "🌸",
-        target: "gucci-gardena",
+        emoji: "🕊️",
+        weights: LEAN["gucci-gardena"],
         label: { uz: "“Juda nafis va yoqimli”", ru: "«Очень нежно и изящно»" },
       },
       {
         emoji: "🌊",
-        target: "afternoon-swim",
+        weights: LEAN["afternoon-swim"],
         label: { uz: "“Unda yozgi erkinlik bor”", ru: "«В нём есть летняя свобода»" },
       },
       {
         emoji: "🌙",
-        target: "imagination",
+        weights: LEAN.imagination,
         label: {
           uz: "“Qandaydir sirli jozibasi bor”",
           ru: "«Есть какая-то загадочная притягательность»",
         },
       },
       {
-        emoji: "🎼",
-        target: "symphoniya",
+        emoji: "✨",
+        weights: LEAN.symphoniya,
         label: {
           uz: "“Juda o‘ziga xos va ilhomli”",
           ru: "«Очень особенная, вдохновляющая энергия»",
         },
       },
       {
-        emoji: "⚡",
-        target: "creation",
+        emoji: "💎",
+        weights: LEAN.creation,
         label: { uz: "“U o‘ziga juda ishonadi”", ru: "«Видно, что человек уверен в себе»" },
       },
     ],
@@ -87,40 +139,40 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     },
     options: [
       {
-        emoji: "🌸",
-        target: "gucci-gardena",
+        emoji: "🌹",
+        weights: LEAN["gucci-gardena"],
         label: {
           uz: "Gullar, sokin musiqa va romantik uchrashuv",
           ru: "Цветы, тихая музыка и романтичная встреча",
         },
       },
       {
-        emoji: "🌊",
-        target: "afternoon-swim",
+        emoji: "🏖️",
+        weights: LEAN["afternoon-swim"],
         label: {
           uz: "Quyosh, suv, yengil shamol va kulgi",
           ru: "Солнце, вода, лёгкий ветер и смех",
         },
       },
       {
-        emoji: "🌙",
-        target: "imagination",
+        emoji: "🌃",
+        weights: LEAN.imagination,
         label: {
           uz: "Tungi shahar, chiroqlar va sirli nigoh",
           ru: "Ночной город, огни и загадочный взгляд",
         },
       },
       {
-        emoji: "🎼",
-        target: "symphoniya",
+        emoji: "🎹",
+        weights: LEAN.symphoniya,
         label: {
           uz: "Piano ovozi, san’at va chiroyli fikrlar",
           ru: "Звук пианино, искусство и красивые мысли",
         },
       },
       {
-        emoji: "⚡",
-        target: "creation",
+        emoji: "👑",
+        weights: LEAN.creation,
         label: {
           uz: "Muhim kun, kuchli obraz va katta kirish",
           ru: "Важный день, сильный образ и эффектное появление",
@@ -136,32 +188,32 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     },
     options: [
       {
-        emoji: "🌸",
-        target: "gucci-gardena",
+        emoji: "🤍",
+        weights: LEAN["gucci-gardena"],
         label: {
           uz: "“Men nozikman, lekin esda qolaman.”",
           ru: "«Я нежный, но меня запоминают.»",
         },
       },
       {
-        emoji: "🌊",
-        target: "afternoon-swim",
+        emoji: "🍃",
+        weights: LEAN["afternoon-swim"],
         label: {
           uz: "“Men yengillik va erkinlikni tanlayman.”",
           ru: "«Я выбираю лёгкость и свободу.»",
         },
       },
       {
-        emoji: "🌙",
-        target: "imagination",
+        emoji: "🔮",
+        weights: LEAN.imagination,
         label: {
           uz: "“Menda aytilmagan sir bor.”",
           ru: "«Во мне есть неразгаданная тайна.»",
         },
       },
       {
-        emoji: "🎼",
-        target: "symphoniya",
+        emoji: "🎻",
+        weights: LEAN.symphoniya,
         label: {
           uz: "“Men oddiy emasman, men ilhomman.”",
           ru: "«Я не обычный аромат, я вдохновение.»",
@@ -169,7 +221,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
       },
       {
         emoji: "⚡",
-        target: "creation",
+        weights: LEAN.creation,
         label: {
           uz: "“Men kirgan joyda e’tibor menda bo‘ladi.”",
           ru: "«Когда я появляюсь, внимание на мне.»",
@@ -228,6 +280,15 @@ export const ARCHETYPES: Record<ProductSlug, Archetype> = {
   },
 }
 
+/** Fixed product display names (used by admin analytics). Never localised. */
+export const PRODUCT_DISPLAY_NAMES: Record<ProductSlug, string> = {
+  "gucci-gardena": "Gucci Gardena",
+  symphoniya: "Symphoniya",
+  imagination: "Imagination",
+  "afternoon-swim": "Afternoon Swim",
+  creation: "Creation",
+}
+
 /** UI chrome copy for the quiz. */
 export const QUIZ_UI = {
   introEyebrow: { uz: "FarKhadi ifor testi", ru: "Тест ароматов FarKhadi" },
@@ -236,11 +297,12 @@ export const QUIZ_UI = {
     ru: "Какой аромат FarKhadi — ваш?",
   },
   introSubtitle: {
-    uz: "4 ta savolga javob bering — FarKhadi sizning kayfiyatingizga mos iforni topadi.",
-    ru: "Ответьте на 4 вопроса — FarKhadi подберёт аромат под ваше настроение.",
+    uz: "Bir necha savol — va FarKhadi sizning kayfiyatingizga mos iforni topadi.",
+    ru: "Несколько вопросов — и FarKhadi подберёт аромат под ваше настроение.",
   },
   introNote: { uz: "Email yoki telefon shart emas.", ru: "Без email и телефона." },
   start: { uz: "Testni boshlash ✨", ru: "Начать тест ✨" },
+  genderTitle: { uz: "Ifor kim uchun?", ru: "Для кого аромат?" },
   questionWord: { uz: "Savol", ru: "Вопрос" },
   loading: [
     { uz: "Kayfiyatingiz tekshirilmoqda…", ru: "Проверяем ваше настроение…" },
@@ -260,10 +322,6 @@ export const QUIZ_UI = {
     ru: "Вам также может подойти:",
   },
   retake: { uz: "Qayta urinish", ru: "Пройти заново" },
-  giftCta: {
-    uz: "Telegram orqali sovg‘a chegirma olish",
-    ru: "Получить подарочную скидку в Telegram",
-  },
   // Share card
   shareLabel: { uz: "FarKhadi ifor testi", ru: "Тест ароматов FarKhadi" },
   shareMyResult: { uz: "Mening natijam:", ru: "Мой результат:" },
@@ -273,22 +331,24 @@ export const QUIZ_UI = {
     uz: "30 soniyada testingizni o‘ting.",
     ru: "Пройди тест за 30 секунд.",
   },
-  shareBtn: { uz: "Natijani ulashish", ru: "Поделиться результатом" },
-  saveStory: { uz: "Story uchun saqlash", ru: "Сохранить для Story" },
+  shareHeading: {
+    uz: "Natijangizni do‘stlaringiz bilan ulashing",
+    ru: "Поделитесь результатом с друзьями",
+  },
+  shareToInstagram: { uz: "Instagram’ga ulashish", ru: "Поделиться в Instagram" },
+  savePhoto: { uz: "Rasmni saqlash", ru: "Сохранить фото" },
+  preparing: { uz: "Rasm tayyorlanmoqda…", ru: "Готовим изображение…" },
   shareTitle: { uz: "FarKhadi ifor testi", ru: "Тест ароматов FarKhadi" },
-  linkCopied: { uz: "Havola nusxalandi ✨", ru: "Ссылка скопирована ✨" },
-  storyHint: {
-    uz: "Kartani skrinshot qiling va Story’ga joylang ✨",
-    ru: "Сделайте скриншот карточки и добавьте в Story ✨",
+  photoSaved: { uz: "Rasm saqlandi ✨", ru: "Фото сохранено ✨" },
+  shareError: {
+    uz: "Ulashib bo‘lmadi. Rasm saqlandi — Story’ga qo‘ying.",
+    ru: "Не удалось поделиться. Фото сохранено — добавьте в Story.",
   },
   // Homepage teaser
   teaserTitle: { uz: "Qaysi FarKhadi ifori sizniki?", ru: "Какой аромат FarKhadi — ваш?" },
   teaserSubtitle: {
-    uz: "4 ta savolga javob bering. FarKhadi sizning kayfiyatingizga mos iforni topadi.",
-    ru: "Ответьте на 4 вопроса. FarKhadi подберёт аромат под ваше настроение.",
+    uz: "Bir necha savolga javob bering — FarKhadi sizning kayfiyatingizga mos iforni topadi.",
+    ru: "Ответьте на несколько вопросов — FarKhadi подберёт аромат под ваше настроение.",
   },
   teaserNote: { uz: "Email yoki telefon shart emas.", ru: "Без email и телефона." },
 } satisfies Record<string, LB | LB[]>
-
-/** Telegram handle used by the optional after-result gift CTA. */
-export const TELEGRAM_URL = "https://t.me/farkhadiparfum"

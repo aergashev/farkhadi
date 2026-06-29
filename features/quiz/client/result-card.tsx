@@ -3,7 +3,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { ArrowRight, Gift, RotateCcw } from "lucide-react"
+import { ArrowRight, RotateCcw } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
@@ -11,7 +11,7 @@ import { useI18n } from "@/providers/lib/i18n/client"
 import { useAddToCart } from "@/features/cart/add-to-cart/client"
 import { formatPrice, pickLocale } from "@/shared/lib/format"
 import type { Product } from "@/entities/product/data/shared/types"
-import { QUIZ_UI, TELEGRAM_URL, type Archetype } from "../shared"
+import { QUIZ_UI, type Archetype } from "../shared"
 
 type Match = { product: Product; archetype: Archetype }
 
@@ -19,10 +19,12 @@ export function ResultCard({
   match,
   runnerUp,
   onRetake,
+  onAddToCart,
 }: {
   match: Match
   runnerUp: Match | null
   onRetake: () => void
+  onAddToCart?: () => void
 }) {
   const { locale } = useI18n()
   const router = useRouter()
@@ -39,6 +41,7 @@ export function ResultCard({
   ].flat()
 
   const buyNow = () => {
+    onAddToCart?.()
     addToCart(1)
     router.push("/cart")
   }
@@ -129,7 +132,7 @@ export function ResultCard({
 
         <Separator className="my-6 bg-border" />
 
-        <div className="flex flex-wrap items-center gap-4">
+        <div>
           <Button
             variant="ghost"
             onClick={onRetake}
@@ -138,15 +141,6 @@ export function ResultCard({
             <RotateCcw className="size-4" />
             {L(QUIZ_UI.retake)}
           </Button>
-          <a
-            href={TELEGRAM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm text-primary/80 transition hover:text-primary"
-          >
-            <Gift className="size-4" />
-            {L(QUIZ_UI.giftCta)}
-          </a>
         </div>
       </div>
     </div>

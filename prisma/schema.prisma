@@ -28,6 +28,17 @@ model Product {
   @@index([createdAt])
 }
 
+model QuizEvent {
+  id          String   @id @default(cuid())
+  type        String // "started" | "finished" | "added_to_cart" | "shared"
+  gender      String? // "female" | "male"
+  productSlug String? // result perfume (for finished / added_to_cart / shared)
+  createdAt   DateTime @default(now())
+
+  @@index([type])
+  @@index([createdAt])
+}
+
 model Order {
   id              String   @id @default(cuid())
   number          String   @unique
