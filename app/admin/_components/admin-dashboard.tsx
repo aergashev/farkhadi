@@ -57,28 +57,30 @@ export function AdminDashboard({
         <h1 className="mb-6 font-serif text-3xl">{dict.admin.title}</h1>
 
         <Tabs defaultValue="products">
-          <TabsList className="bg-card">
-            <TabsTrigger value="products" className="gap-2">
-              <Package className="size-4" />
-              {dict.admin.tabsProducts}
-              <Badge className="border-0 bg-accent text-[10px] text-primary">
-                {products.length}
-              </Badge>
-            </TabsTrigger>
-            <TabsTrigger value="orders" className="gap-2">
-              <ShoppingCart className="size-4" />
-              {dict.admin.tabsOrders}
-              {newOrders > 0 && (
-                <Badge className="border-0 bg-primary text-[10px] text-primary-foreground">
-                  {newOrders}
+          <div className="-mx-5 overflow-x-auto px-5 sm:mx-0 sm:overflow-x-visible sm:px-0">
+            <TabsList className="bg-card">
+              <TabsTrigger value="products" className="gap-2">
+                <Package className="size-4" />
+                {dict.admin.tabsProducts}
+                <Badge className="border-0 bg-accent text-[10px] text-primary">
+                  {products.length}
                 </Badge>
-              )}
-            </TabsTrigger>
-            <TabsTrigger value="quiz" className="gap-2">
-              <Sparkles className="size-4" />
-              {dict.admin.tabsQuiz}
-            </TabsTrigger>
-          </TabsList>
+              </TabsTrigger>
+              <TabsTrigger value="orders" className="gap-2">
+                <ShoppingCart className="size-4" />
+                {dict.admin.tabsOrders}
+                {newOrders > 0 && (
+                  <Badge className="border-0 bg-primary text-[10px] text-primary-foreground">
+                    {newOrders}
+                  </Badge>
+                )}
+              </TabsTrigger>
+              <TabsTrigger value="quiz" className="gap-2">
+                <Sparkles className="size-4" />
+                {dict.admin.tabsQuiz}
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
           <TabsContent value="products" className="mt-6">
             <ProductsManager products={products} />
