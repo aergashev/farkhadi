@@ -178,6 +178,7 @@ export const uz = {
     quizByGender: "Jins bo‘yicha",
     quizFemale: "Ayollar",
     quizMale: "Erkaklar",
+    quizUnknown: "Aniqlanmagan",
     quizByResult: "Natijalar bo‘yicha",
     quizNoData: "Hozircha ma’lumot yo‘q",
     productsTitle: "Mahsulotlarni boshqarish",

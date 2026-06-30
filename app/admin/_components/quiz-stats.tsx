@@ -8,6 +8,7 @@ import {
   PRODUCT_DISPLAY_NAMES,
   type QuizStats,
 } from "@/features/quiz/shared"
+import { QuizIcon } from "@/features/quiz/client"
 
 function StatCard({
   icon,
@@ -70,23 +71,23 @@ export function QuizStatsPanel({ stats }: { stats: QuizStats }) {
         {/* Gender */}
         <div className="rounded-2xl border border-border bg-card p-5">
           <h3 className="mb-4 font-serif text-lg">{dict.admin.quizByGender}</h3>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="rounded-xl bg-brand-green-deep/40 p-4 text-center">
-              <p className="text-3xl">👩</p>
-              <p className="mt-1 font-serif text-2xl tabular-nums">
-                {stats.byGender.female}
-              </p>
-              <p className="text-xs text-muted-foreground">
-                {dict.admin.quizFemale}
-              </p>
-            </div>
-            <div className="rounded-xl bg-brand-green-deep/40 p-4 text-center">
-              <p className="text-3xl">👨</p>
-              <p className="mt-1 font-serif text-2xl tabular-nums">
-                {stats.byGender.male}
-              </p>
-              <p className="text-xs text-muted-foreground">{dict.admin.quizMale}</p>
-            </div>
+          <div className="grid grid-cols-3 gap-3">
+            {(
+              [
+                ["female", dict.admin.quizFemale, stats.byGender.female],
+                ["male", dict.admin.quizMale, stats.byGender.male],
+                ["unknown", dict.admin.quizUnknown, stats.byGender.unknown],
+              ] as const
+            ).map(([icon, label, value]) => (
+              <div
+                key={icon}
+                className="flex flex-col items-center rounded-xl bg-brand-green-deep/40 p-4 text-center"
+              >
+                <QuizIcon name={icon} className="size-7 text-primary" />
+                <p className="mt-2 font-serif text-2xl tabular-nums">{value}</p>
+                <p className="text-xs text-muted-foreground">{label}</p>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -103,8 +104,12 @@ export function QuizStatsPanel({ stats }: { stats: QuizStats }) {
               {stats.byProduct.map((row) => (
                 <li key={row.slug} className="space-y-1">
                   <div className="flex items-center justify-between text-sm">
-                    <span>
-                      {ARCHETYPES[row.slug].emoji} {PRODUCT_DISPLAY_NAMES[row.slug]}
+                    <span className="inline-flex items-center gap-2">
+                      <QuizIcon
+                        name={ARCHETYPES[row.slug].icon}
+                        className="size-4 text-primary"
+                      />
+                      {PRODUCT_DISPLAY_NAMES[row.slug]}
                     </span>
                     <span className="tabular-nums text-primary">{row.count}</span>
                   </div>

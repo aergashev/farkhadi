@@ -180,6 +180,7 @@ export const ru: Dictionary = {
     quizByGender: "По полу",
     quizFemale: "Женщины",
     quizMale: "Мужчины",
+    quizUnknown: "Не указан",
     quizByResult: "По результатам",
     quizNoData: "Пока нет данных",
     productsTitle: "Управление товарами",

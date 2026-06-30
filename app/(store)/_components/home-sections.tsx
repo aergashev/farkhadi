@@ -2,13 +2,27 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, Sparkles } from "lucide-react"
+import {
+  ArrowRight,
+  CreditCard,
+  Droplets,
+  Gift,
+  MessageCircle,
+  Sparkles,
+  Truck,
+} from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { useDict, useI18n } from "@/providers/lib/i18n/client"
 import { pickLocale } from "@/shared/lib/format"
-import { QUIZ_UI } from "@/features/quiz/shared"
+import {
+  ARCHETYPES,
+  PRODUCT_DISPLAY_NAMES,
+  QUIZ_UI,
+  TEASER_PREVIEWS,
+} from "@/features/quiz/shared"
+import { QuizIcon } from "@/features/quiz/client"
 
 export function Hero() {
   const dict = useDict()
@@ -199,7 +213,11 @@ export function QuizTeaser() {
           }}
         />
         <div className="relative mx-auto max-w-xl space-y-5">
-          <p className="text-2xl tracking-[0.3em]">🌸 🎼 🌙 🌊 ⚡</p>
+          <div className="flex justify-center gap-3 text-primary">
+            {(["flower", "music", "moon", "waves", "bolt"] as const).map((n) => (
+              <QuizIcon key={n} name={n} className="size-6" />
+            ))}
+          </div>
           <h2 className="font-serif text-3xl sm:text-4xl">{L(QUIZ_UI.teaserTitle)}</h2>
           <p className="text-muted-foreground">{L(QUIZ_UI.teaserSubtitle)}</p>
           <div className="flex flex-col items-center gap-3">
@@ -213,6 +231,93 @@ export function QuizTeaser() {
             <p className="text-xs text-muted-foreground">{L(QUIZ_UI.teaserNote)}</p>
           </div>
         </div>
+      </div>
+
+      {/* Result previews — curiosity hooks */}
+      <div className="mt-5 grid gap-3 sm:grid-cols-3">
+        {TEASER_PREVIEWS.map((slug) => {
+          const a = ARCHETYPES[slug]
+          return (
+            <Link
+              key={slug}
+              href="/quiz"
+              className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:bg-accent"
+            >
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-primary/25 bg-accent/40 text-primary">
+                <QuizIcon name={a.icon} className="size-6" />
+              </span>
+              <span className="min-w-0">
+                <span className="block truncate font-serif text-base text-primary">
+                  {L(a.name)}
+                </span>
+                <span className="block truncate text-sm text-muted-foreground">
+                  {PRODUCT_DISPLAY_NAMES[slug]}
+                </span>
+              </span>
+            </Link>
+          )
+        })}
+      </div>
+    </section>
+  )
+}
+
+const HOW_IT_WORKS = [
+  {
+    Icon: Truck,
+    label: {
+      uz: "Toshkent bo‘ylab yetkazib berish",
+      ru: "Доставка по Ташкенту",
+    },
+  },
+  {
+    Icon: CreditCard,
+    label: {
+      uz: "Click / Payme / karta / naqd",
+      ru: "Click / Payme / карта / наличные",
+    },
+  },
+  {
+    Icon: Droplets,
+    label: { uz: "30 ml Eau de Parfum", ru: "30 мл Eau de Parfum" },
+  },
+  {
+    Icon: Gift,
+    label: {
+      uz: "Sovg‘a uchun chiroyli qadoq",
+      ru: "Красивая подарочная упаковка",
+    },
+  },
+  {
+    Icon: MessageCircle,
+    label: {
+      uz: "Savollar uchun Telegram / telefon",
+      ru: "Telegram / телефон для вопросов",
+    },
+  },
+]
+
+export function HowItWorks() {
+  const { locale } = useI18n()
+  return (
+    <section className="container-px py-16 lg:py-20">
+      <h2 className="mb-10 text-center font-serif text-3xl sm:text-4xl">
+        {locale === "ru" ? "Как работает заказ?" : "Buyurtma qanday ishlaydi?"}
+      </h2>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        {HOW_IT_WORKS.map(({ Icon, label }, i) => (
+          <div
+            key={i}
+            className="flex flex-col items-center gap-3 rounded-2xl border border-border bg-card p-6 text-center transition-colors hover:border-primary/40"
+          >
+            <span className="flex size-14 items-center justify-center rounded-2xl border border-primary/25 bg-accent/40 text-primary">
+              <Icon className="size-7" strokeWidth={1.6} />
+            </span>
+            <p className="text-sm leading-relaxed text-brand-cream">
+              {pickLocale(label, locale)}
+            </p>
+          </div>
+        ))}
       </div>
     </section>
   )

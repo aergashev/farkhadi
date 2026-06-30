@@ -7,6 +7,7 @@ import { getT } from "@/providers/lib/i18n/server"
 import { ProductGrid } from "./_components/product-grid"
 import {
   Hero,
+  HowItWorks,
   Marquee,
   QuizTeaser,
   SectionHeading,
@@ -53,6 +54,7 @@ export default async function HomePage() {
       <QuizTeaser />
       <Values />
       <StoryTeaser />
+      <HowItWorks />
     </>
   )
 }

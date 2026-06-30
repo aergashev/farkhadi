@@ -1,7 +1,7 @@
 "use server"
 
 import { getPrisma } from "@/providers/services/prisma/server"
-import { QUIZ_EVENT_TYPES, type QuizEventType } from "../shared/types"
+import { QUIZ_EVENT_TYPES, type Gender, type QuizEventType } from "../shared/types"
 
 /**
  * Records a quiz funnel event (started / finished / added_to_cart / shared).
@@ -10,7 +10,7 @@ import { QUIZ_EVENT_TYPES, type QuizEventType } from "../shared/types"
  */
 export async function recordQuizEvent(input: {
   type: QuizEventType
-  gender?: "female" | "male"
+  gender?: Gender
   productSlug?: string
 }): Promise<void> {
   if (!QUIZ_EVENT_TYPES.includes(input.type)) return

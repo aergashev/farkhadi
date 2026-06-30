@@ -21,11 +21,14 @@ import {
   type Weights,
 } from "../shared"
 import { recordQuizEvent } from "../server/actions"
+import { QuizIcon, IconBadge } from "./icons"
 import { ResultCard } from "./result-card"
 import { ShareCard } from "./share-card"
 
 type Phase = "intro" | "gender" | "quiz" | "loading" | "result"
 type Match = { product: Product; archetype: Archetype }
+
+const VIBE_ICONS = ["flower", "music", "moon", "waves", "bolt"] as const
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr]
@@ -34,6 +37,15 @@ function shuffle<T>(arr: T[]): T[] {
     ;[a[i], a[j]] = [a[j], a[i]]
   }
   return a
+}
+
+function optionCard(active: boolean) {
+  return cn(
+    "group flex items-center gap-4 rounded-2xl border p-4 text-left transition-all duration-200",
+    active
+      ? "border-primary bg-accent shadow-[0_0_28px_-4px_rgba(244,199,120,0.55)]"
+      : "border-border bg-card hover:-translate-y-0.5 hover:border-primary/50 hover:bg-accent hover:shadow-[0_12px_32px_-18px_rgba(244,199,120,0.5)]",
+  )
 }
 
 export function QuizFlow({ products }: { products: Product[] }) {
@@ -46,7 +58,7 @@ export function QuizFlow({ products }: { products: Product[] }) {
   const [answers, setAnswers] = useState<Weights[]>([])
   const [loadingIdx, setLoadingIdx] = useState(0)
   const [result, setResult] = useState<QuizResult | null>(null)
-  // Shuffle each question's options once so placement is never predictable.
+  const [picked, setPicked] = useState<number | null>(null)
   const [questions] = useState<QuizQuestion[]>(() =>
     QUIZ_QUESTIONS.map((q) => ({ ...q, options: shuffle(q.options) })),
   )
@@ -69,17 +81,23 @@ export function QuizFlow({ products }: { products: Product[] }) {
       const res = scoreQuiz(answers, gender, slugs, slugs)
       setResult(res)
       setPhase("result")
-      void recordQuizEvent({
-        type: "finished",
-        gender,
-        productSlug: res.winner,
-      })
+      void recordQuizEvent({ type: "finished", gender, productSlug: res.winner })
     }, 1500)
     return () => {
       clearInterval(interval)
       clearTimeout(timeout)
     }
   }, [phase, gender, answers, products])
+
+  // Brief gold-glow selected state, then advance.
+  const pick = (i: number, run: () => void) => {
+    if (picked !== null) return
+    setPicked(i)
+    setTimeout(() => {
+      setPicked(null)
+      run()
+    }, 240)
+  }
 
   const chooseGender = (g: Gender) => {
     setGender(g)
@@ -103,6 +121,7 @@ export function QuizFlow({ products }: { products: Product[] }) {
     setStep(0)
     setResult(null)
     setGender(null)
+    setPicked(null)
     setPhase("gender")
   }
 
@@ -111,7 +130,11 @@ export function QuizFlow({ products }: { products: Product[] }) {
     return (
       <div className="container-px flex min-h-[70vh] items-center justify-center py-12">
         <div className="animate-in fade-in zoom-in-95 max-w-xl space-y-6 text-center duration-500">
-          <p className="text-3xl tracking-[0.3em]">🌸 🎼 🌙 🌊 ⚡</p>
+          <div className="flex justify-center gap-3 text-primary">
+            {VIBE_ICONS.map((n) => (
+              <QuizIcon key={n} name={n} className="size-6" />
+            ))}
+          </div>
           <span className="inline-block rounded-full border border-primary/30 bg-accent/40 px-4 py-1.5 text-xs uppercase tracking-[0.22em] text-primary">
             {L(QUIZ_UI.introEyebrow)}
           </span>
@@ -144,16 +167,14 @@ export function QuizFlow({ products }: { products: Product[] }) {
           <h2 className="font-serif text-3xl sm:text-4xl">
             {L(QUIZ_UI.genderTitle)}
           </h2>
-          <div className="grid grid-cols-2 gap-4">
-            {genderOptions.map((opt) => (
+          <div className="grid gap-3">
+            {genderOptions.map((opt, i) => (
               <button
                 key={opt.value}
-                onClick={() => chooseGender(opt.value)}
-                className="group flex flex-col items-center gap-3 rounded-2xl border border-border bg-card p-8 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/50 hover:bg-accent hover:shadow-[0_12px_32px_-18px_rgba(244,199,120,0.5)]"
+                onClick={() => pick(i, () => chooseGender(opt.value))}
+                className={optionCard(picked === i)}
               >
-                <span className="text-5xl transition-transform duration-200 group-hover:scale-110">
-                  {opt.emoji}
-                </span>
+                <IconBadge name={opt.icon} selected={picked === i} />
                 <span className="font-serif text-lg text-brand-cream">
                   {L(opt.label)}
                 </span>
@@ -198,15 +219,10 @@ export function QuizFlow({ products }: { products: Product[] }) {
               {q.options.map((opt, i) => (
                 <button
                   key={i}
-                  onClick={() => choose(opt.weights)}
-                  className={cn(
-                    "group flex items-center gap-4 rounded-2xl border border-border bg-card p-4 text-left transition-all duration-200",
-                    "hover:-translate-y-0.5 hover:border-primary/50 hover:bg-accent hover:shadow-[0_12px_32px_-18px_rgba(244,199,120,0.5)]",
-                  )}
+                  onClick={() => pick(i, () => choose(opt.weights))}
+                  className={optionCard(picked === i)}
                 >
-                  <span className="text-2xl transition-transform duration-200 group-hover:scale-110">
-                    {opt.emoji}
-                  </span>
+                  <IconBadge name={opt.icon} selected={picked === i} />
                   <span className="text-base text-brand-cream">{L(opt.label)}</span>
                 </button>
               ))}
@@ -225,9 +241,7 @@ export function QuizFlow({ products }: { products: Product[] }) {
           <span className="absolute inset-0 rounded-full border-2 border-primary/15" />
           <span className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-primary [animation-duration:0.9s]" />
           <span className="absolute inset-[30%] animate-pulse rounded-full bg-primary/25 blur-[2px]" />
-          <span
-            className="absolute inset-0 animate-spin rounded-full border border-transparent border-b-primary/40 [animation-direction:reverse] [animation-duration:1.4s]"
-          />
+          <span className="absolute inset-0 animate-spin rounded-full border border-transparent border-b-primary/40 [animation-direction:reverse] [animation-duration:1.4s]" />
         </div>
         <p
           key={loadingIdx}

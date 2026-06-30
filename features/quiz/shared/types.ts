@@ -11,13 +11,24 @@ export type ProductSlug =
   | "afternoon-swim"
   | "creation"
 
-export type Gender = "female" | "male"
+export type Gender = "female" | "male" | "unknown"
+
+/** One consistent icon vocabulary (rendered as gold-stroke lucide SVGs). */
+export type IconName =
+  | "flower"
+  | "music"
+  | "moon"
+  | "waves"
+  | "bolt"
+  | "female"
+  | "male"
+  | "unknown"
 
 /** Weighted contribution of one answer to several perfumes. */
 export type Weights = Partial<Record<ProductSlug, number>>
 
 export type QuizOption = {
-  emoji: string
+  icon: IconName
   label: LB
   /** Weighted points this option adds (primary + secondary leanings). */
   weights: Weights
@@ -31,7 +42,7 @@ export type QuizQuestion = {
 
 export type Archetype = {
   slug: ProductSlug
-  emoji: string
+  icon: IconName
   /** Playful vibe name (archetype layer only). */
   name: LB
   /** One warm personality sentence, shared by the result + share card. */
@@ -53,6 +64,6 @@ export type QuizStats = {
   addedToCart: number
   shared: number
   completionRate: number // 0..1
-  byGender: { female: number; male: number }
+  byGender: { female: number; male: number; unknown: number }
   byProduct: { slug: ProductSlug; count: number }[]
 }

@@ -9,7 +9,7 @@ const EMPTY: QuizStats = {
   addedToCart: 0,
   shared: 0,
   completionRate: 0,
-  byGender: { female: 0, male: 0 },
+  byGender: { female: 0, male: 0, unknown: 0 },
   byProduct: [],
 }
 
@@ -46,6 +46,7 @@ export async function getQuizStats(): Promise<QuizStats> {
       byGender: {
         female: byGender.find((r) => r.gender === "female")?._count._all ?? 0,
         male: byGender.find((r) => r.gender === "male")?._count._all ?? 0,
+        unknown: byGender.find((r) => r.gender === "unknown")?._count._all ?? 0,
       },
       byProduct: byProduct
         .filter((r) => r.productSlug)

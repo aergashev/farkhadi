@@ -12,6 +12,7 @@ import { useAddToCart } from "@/features/cart/add-to-cart/client"
 import { formatPrice, pickLocale } from "@/shared/lib/format"
 import type { Product } from "@/entities/product/data/shared/types"
 import { QUIZ_UI, type Archetype } from "../shared"
+import { IconBadge, QuizIcon } from "./icons"
 
 type Match = { product: Product; archetype: Archetype }
 
@@ -67,10 +68,13 @@ export function ResultCard({
 
       {/* Result */}
       <div className="flex flex-col">
-        <span className="text-sm uppercase tracking-[0.2em] text-primary">
-          {L(QUIZ_UI.resultYouAre)} {archetype.emoji} {L(archetype.name)}
-        </span>
-        <h1 className="mt-2 font-serif text-4xl sm:text-5xl">{name}</h1>
+        <div className="mb-4 flex items-center gap-3">
+          <IconBadge name={archetype.icon} />
+          <span className="text-sm uppercase tracking-[0.2em] text-primary">
+            {L(QUIZ_UI.resultYouAre)} {L(archetype.name)}
+          </span>
+        </div>
+        <h1 className="font-serif text-4xl sm:text-5xl">{name}</h1>
         <p className="mt-1 text-sm text-muted-foreground">{L(QUIZ_UI.resultMatch)}</p>
 
         <p className="mt-5 font-serif text-xl italic leading-relaxed text-brand-cream">
@@ -123,8 +127,9 @@ export function ResultCard({
             className="mt-5 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition hover:text-primary"
           >
             {L(QUIZ_UI.runnerUp)}{" "}
-            <span className="text-brand-cream">
-              {pickLocale(runnerUp.product.name, locale)} {runnerUp.archetype.emoji}
+            <span className="inline-flex items-center gap-1.5 text-brand-cream">
+              <QuizIcon name={runnerUp.archetype.icon} className="size-4 text-primary" />
+              {pickLocale(runnerUp.product.name, locale)}
             </span>
             <ArrowRight className="size-3.5" />
           </Link>

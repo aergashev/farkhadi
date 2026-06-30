@@ -10,6 +10,7 @@ import { useI18n } from "@/providers/lib/i18n/client"
 import { pickLocale } from "@/shared/lib/format"
 import type { Product } from "@/entities/product/data/shared/types"
 import { QUIZ_UI, type Archetype } from "../shared"
+import { IconBadge } from "./icons"
 
 export function ShareCard({
   product,
@@ -131,7 +132,7 @@ export function ShareCard({
             <span className="text-[10px] uppercase tracking-[0.2em] text-brand-cream/60">
               {L(QUIZ_UI.shareMyResult)}
             </span>
-            <span className="text-[2.6rem] leading-none">{archetype.emoji}</span>
+            <IconBadge name={archetype.icon} size="lg" />
             <span className="font-serif text-xl font-semibold uppercase leading-tight tracking-wide text-primary">
               {L(archetype.name)}
             </span>

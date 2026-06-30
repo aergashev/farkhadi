@@ -15,17 +15,20 @@ export const UNISEX_SLUGS: ProductSlug[] = [
 ]
 export const FEMALE_ONLY_SLUGS: ProductSlug[] = ["gucci-gardena", "symphoniya"]
 
-/** Perfumes a user can be matched with, given their answer to the gender step. */
+/**
+ * Perfumes a user can be matched with. Women → all; men or "not sure yet"
+ * (a safe, gender-neutral gift) → unisex only.
+ */
 export function eligibleFor(gender: Gender): ProductSlug[] {
-  return gender === "male"
-    ? UNISEX_SLUGS
-    : [...UNISEX_SLUGS, ...FEMALE_ONLY_SLUGS]
+  return gender === "female"
+    ? [...UNISEX_SLUGS, ...FEMALE_ONLY_SLUGS]
+    : UNISEX_SLUGS
 }
 
 /**
  * Each answer leans primarily to one perfume (+2) and secondarily to a
- * thematically adjacent one (+1). The secondary is always reachable by men
- * (a unisex perfume), so a romantic/creative man still gets a sensible match.
+ * thematically adjacent unisex one (+1), so a romantic/creative man still gets
+ * a sensible match. The option icon is that perfume's vibe icon.
  */
 const LEAN: Record<ProductSlug, Weights> = {
   "gucci-gardena": { "gucci-gardena": 2, imagination: 1 },
@@ -36,25 +39,30 @@ const LEAN: Record<ProductSlug, Weights> = {
 }
 
 export const GENDER_QUESTION = {
-  title: { uz: "Ifor kim uchun?", ru: "Для кого аромат?" } as LB,
+  title: { uz: "Kimga sovg‘a qilamiz?", ru: "Кому дарим аромат?" } as LB,
   options: [
     {
       value: "female" as Gender,
-      emoji: "👩",
-      label: { uz: "Ayol uchun", ru: "Для женщины" } as LB,
+      icon: "female" as const,
+      label: { uz: "Ayolga", ru: "Женщине" } as LB,
     },
     {
       value: "male" as Gender,
-      emoji: "👨",
-      label: { uz: "Erkak uchun", ru: "Для мужчины" } as LB,
+      icon: "male" as const,
+      label: { uz: "Erkakka", ru: "Мужчине" } as LB,
+    },
+    {
+      value: "unknown" as Gender,
+      icon: "unknown" as const,
+      label: { uz: "Hali bilmayman", ru: "Пока не знаю" } as LB,
     },
   ],
 }
 
 /**
  * Four questions: mood → aura → scene → style.
- * Emojis are varied per option and options are shuffled at runtime, so the
- * mapping is never obvious from position or icon.
+ * Icons share one visual language (gold-stroke SVGs) and options are shuffled
+ * at runtime, so the mapping is never obvious from position.
  */
 export const QUIZ_QUESTIONS: QuizQuestion[] = [
   {
@@ -65,27 +73,27 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     },
     options: [
       {
-        emoji: "💗",
+        icon: "flower",
         weights: LEAN["gucci-gardena"],
         label: { uz: "Yumshoq, romantik, nafis", ru: "Мягкое, романтичное, нежное" },
       },
       {
-        emoji: "☀️",
+        icon: "waves",
         weights: LEAN["afternoon-swim"],
         label: { uz: "Quyoshli, erkin, yengil", ru: "Солнечное, свободное, лёгкое" },
       },
       {
-        emoji: "🌌",
+        icon: "moon",
         weights: LEAN.imagination,
         label: { uz: "Sirli, chuqur, jozibali", ru: "Загадочное, глубокое, притягательное" },
       },
       {
-        emoji: "🎨",
+        icon: "music",
         weights: LEAN.symphoniya,
         label: { uz: "Ijodkor, nozik, ilhomli", ru: "Творческое, тонкое, вдохновлённое" },
       },
       {
-        emoji: "🔥",
+        icon: "bolt",
         weights: LEAN.creation,
         label: { uz: "Jasur, ishonchli, kuchli", ru: "Смелое, уверенное, сильное" },
       },
@@ -99,17 +107,17 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     },
     options: [
       {
-        emoji: "🕊️",
+        icon: "flower",
         weights: LEAN["gucci-gardena"],
         label: { uz: "“Juda nafis va yoqimli”", ru: "«Очень нежно и изящно»" },
       },
       {
-        emoji: "🌊",
+        icon: "waves",
         weights: LEAN["afternoon-swim"],
         label: { uz: "“Unda yozgi erkinlik bor”", ru: "«В нём есть летняя свобода»" },
       },
       {
-        emoji: "🌙",
+        icon: "moon",
         weights: LEAN.imagination,
         label: {
           uz: "“Qandaydir sirli jozibasi bor”",
@@ -117,7 +125,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
         },
       },
       {
-        emoji: "✨",
+        icon: "music",
         weights: LEAN.symphoniya,
         label: {
           uz: "“Juda o‘ziga xos va ilhomli”",
@@ -125,7 +133,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
         },
       },
       {
-        emoji: "💎",
+        icon: "bolt",
         weights: LEAN.creation,
         label: { uz: "“U o‘ziga juda ishonadi”", ru: "«Видно, что человек уверен в себе»" },
       },
@@ -139,7 +147,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     },
     options: [
       {
-        emoji: "🌹",
+        icon: "flower",
         weights: LEAN["gucci-gardena"],
         label: {
           uz: "Gullar, sokin musiqa va romantik uchrashuv",
@@ -147,7 +155,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
         },
       },
       {
-        emoji: "🏖️",
+        icon: "waves",
         weights: LEAN["afternoon-swim"],
         label: {
           uz: "Quyosh, suv, yengil shamol va kulgi",
@@ -155,7 +163,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
         },
       },
       {
-        emoji: "🌃",
+        icon: "moon",
         weights: LEAN.imagination,
         label: {
           uz: "Tungi shahar, chiroqlar va sirli nigoh",
@@ -163,7 +171,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
         },
       },
       {
-        emoji: "🎹",
+        icon: "music",
         weights: LEAN.symphoniya,
         label: {
           uz: "Piano ovozi, san’at va chiroyli fikrlar",
@@ -171,7 +179,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
         },
       },
       {
-        emoji: "👑",
+        icon: "bolt",
         weights: LEAN.creation,
         label: {
           uz: "Muhim kun, kuchli obraz va katta kirish",
@@ -188,7 +196,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     },
     options: [
       {
-        emoji: "🤍",
+        icon: "flower",
         weights: LEAN["gucci-gardena"],
         label: {
           uz: "“Men nozikman, lekin esda qolaman.”",
@@ -196,7 +204,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
         },
       },
       {
-        emoji: "🍃",
+        icon: "waves",
         weights: LEAN["afternoon-swim"],
         label: {
           uz: "“Men yengillik va erkinlikni tanlayman.”",
@@ -204,7 +212,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
         },
       },
       {
-        emoji: "🔮",
+        icon: "moon",
         weights: LEAN.imagination,
         label: {
           uz: "“Menda aytilmagan sir bor.”",
@@ -212,7 +220,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
         },
       },
       {
-        emoji: "🎻",
+        icon: "music",
         weights: LEAN.symphoniya,
         label: {
           uz: "“Men oddiy emasman, men ilhomman.”",
@@ -220,7 +228,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
         },
       },
       {
-        emoji: "⚡",
+        icon: "bolt",
         weights: LEAN.creation,
         label: {
           uz: "“Men kirgan joyda e’tibor menda bo‘ladi.”",
@@ -235,7 +243,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
 export const ARCHETYPES: Record<ProductSlug, Archetype> = {
   "gucci-gardena": {
     slug: "gucci-gardena",
-    emoji: "🌸",
+    icon: "flower",
     name: { uz: "Romantik Aura", ru: "Романтичная аура" },
     personality: {
       uz: "Men nozik, nafis va esda qoladigan obrazman.",
@@ -244,7 +252,7 @@ export const ARCHETYPES: Record<ProductSlug, Archetype> = {
   },
   symphoniya: {
     slug: "symphoniya",
-    emoji: "🎼",
+    icon: "music",
     name: { uz: "Ilhom Muzasi", ru: "Муза вдохновения" },
     personality: {
       uz: "Men oddiy emasman — menda ilhom va o‘ziga xoslik bor.",
@@ -253,7 +261,7 @@ export const ARCHETYPES: Record<ProductSlug, Archetype> = {
   },
   imagination: {
     slug: "imagination",
-    emoji: "🌙",
+    icon: "moon",
     name: { uz: "Tungi Sehr", ru: "Ночное волшебство" },
     personality: {
       uz: "Men sirli, chuqur va esda qoladigan obrazman.",
@@ -262,7 +270,7 @@ export const ARCHETYPES: Record<ProductSlug, Archetype> = {
   },
   "afternoon-swim": {
     slug: "afternoon-swim",
-    emoji: "🌊",
+    icon: "waves",
     name: { uz: "Erkin Ruh", ru: "Свободный дух" },
     personality: {
       uz: "Men yengil, quyoshli va erkin energiyani tanlayman.",
@@ -271,7 +279,7 @@ export const ARCHETYPES: Record<ProductSlug, Archetype> = {
   },
   creation: {
     slug: "creation",
-    emoji: "⚡",
+    icon: "bolt",
     name: { uz: "Jasur Kontrast", ru: "Смелый контраст" },
     personality: {
       uz: "Men kirgan joyda obrazim seziladi.",
@@ -289,6 +297,13 @@ export const PRODUCT_DISPLAY_NAMES: Record<ProductSlug, string> = {
   creation: "Creation",
 }
 
+/** Archetypes featured as preview cards on the homepage teaser. */
+export const TEASER_PREVIEWS: ProductSlug[] = [
+  "imagination",
+  "gucci-gardena",
+  "afternoon-swim",
+]
+
 /** UI chrome copy for the quiz. */
 export const QUIZ_UI = {
   introEyebrow: { uz: "FarKhadi ifor testi", ru: "Тест ароматов FarKhadi" },
@@ -301,14 +316,14 @@ export const QUIZ_UI = {
     ru: "Несколько вопросов — и FarKhadi подберёт аромат под ваше настроение.",
   },
   introNote: { uz: "Email yoki telefon shart emas.", ru: "Без email и телефона." },
-  start: { uz: "Testni boshlash ✨", ru: "Начать тест ✨" },
-  genderTitle: { uz: "Ifor kim uchun?", ru: "Для кого аромат?" },
+  start: { uz: "Testni boshlash", ru: "Начать тест" },
+  genderTitle: { uz: "Kimga sovg‘a qilamiz?", ru: "Кому дарим аромат?" },
   questionWord: { uz: "Savol", ru: "Вопрос" },
   loading: [
     { uz: "Kayfiyatingiz tekshirilmoqda…", ru: "Проверяем ваше настроение…" },
     { uz: "Sizga mos aura topilmoqda…", ru: "Подбираем вашу ауру…" },
     { uz: "Iforingiz aralashtirilmoqda…", ru: "Смешиваем ваш аромат…" },
-    { uz: "Natija tayyor ✨", ru: "Результат готов ✨" },
+    { uz: "Natija tayyor", ru: "Результат готов" },
   ] as LB[],
   resultYouAre: { uz: "Siz —", ru: "Вы —" },
   resultMatch: { uz: "Sizga mos ifor:", ru: "Ваш аромат:" },
@@ -339,7 +354,7 @@ export const QUIZ_UI = {
   savePhoto: { uz: "Rasmni saqlash", ru: "Сохранить фото" },
   preparing: { uz: "Rasm tayyorlanmoqda…", ru: "Готовим изображение…" },
   shareTitle: { uz: "FarKhadi ifor testi", ru: "Тест ароматов FarKhadi" },
-  photoSaved: { uz: "Rasm saqlandi ✨", ru: "Фото сохранено ✨" },
+  photoSaved: { uz: "Rasm saqlandi", ru: "Фото сохранено" },
   shareError: {
     uz: "Ulashib bo‘lmadi. Rasm saqlandi — Story’ga qo‘ying.",
     ru: "Не удалось поделиться. Фото сохранено — добавьте в Story.",

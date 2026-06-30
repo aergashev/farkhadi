@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { useDict, useI18n } from "@/providers/lib/i18n/client"
 import { formatPrice, pickLocale } from "@/shared/lib/format"
 import type { Product } from "../../../data/shared/types"
+import { PRODUCT_TAGS } from "../../../data/shared/tags"
 
 type Props = {
   product: Product
@@ -22,6 +23,7 @@ export function ProductCard({ product, action, className }: Props) {
   const { locale } = useI18n()
   const dict = useDict()
   const name = pickLocale(product.name, locale)
+  const tag = PRODUCT_TAGS[product.slug]
 
   return (
     <Card
@@ -50,8 +52,13 @@ export function ProductCard({ product, action, className }: Props) {
       </Link>
 
       <CardContent className="flex flex-1 flex-col gap-3 p-5">
-        <div className="space-y-1">
-          <Link href={`/product/${product.slug}`}>
+        <div className="space-y-1.5">
+          {tag && (
+            <span className="inline-block rounded-full border border-primary/30 bg-accent/40 px-2.5 py-0.5 text-[11px] tracking-wide text-primary">
+              {pickLocale(tag, locale)}
+            </span>
+          )}
+          <Link href={`/product/${product.slug}`} className="block">
             <h3 className="font-serif text-xl leading-tight transition-colors group-hover/card:text-primary">
               {name}
             </h3>
