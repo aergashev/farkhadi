@@ -26,16 +26,38 @@ export function eligibleFor(gender: Gender): ProductSlug[] {
 }
 
 /**
- * Each answer leans primarily to one perfume (+2) and secondarily to a
- * thematically adjacent unisex one (+1), so a romantic/creative man still gets
- * a sensible match. The option icon is that perfume's vibe icon.
+ * Each answer leans primarily to one perfume (+2) and secondarily to its
+ * nearest scent neighbour (+1) — feminine florals together, fresh citrus to
+ * the elegant citrus, the two deep/bold orientals to each other. The
+ * secondaries are *distributed* (not all funnelled into imagination/creation),
+ * so the winner actually reflects what the user picked.
  */
 const LEAN: Record<ProductSlug, Weights> = {
-  "gucci-gardena": { "gucci-gardena": 2, imagination: 1 },
-  symphoniya: { symphoniya: 2, creation: 1 },
+  // Romantic floral ↔ elegant floral
+  "gucci-gardena": { "gucci-gardena": 2, symphoniya: 1 },
+  symphoniya: { symphoniya: 2, "gucci-gardena": 1 },
+  // Fresh citrus → its warm-citrus cousin
+  "afternoon-swim": { "afternoon-swim": 2, symphoniya: 1 },
+  // Deep/mysterious ↔ bold/contrast
   imagination: { imagination: 2, creation: 1 },
-  "afternoon-swim": { "afternoon-swim": 2, imagination: 1 },
   creation: { creation: 2, imagination: 1 },
+}
+
+/**
+ * Per-question weight, indexed by answer order (mood, aura, scene, style).
+ * The first (mood) and last (self-image) reveal identity most, so they count
+ * more — this makes results decisive and varied instead of perpetual ties.
+ */
+export const QUESTION_WEIGHTS: number[] = [1.5, 1, 1, 1.5]
+
+/**
+ * When the gift is for a man or undecided, a female-only top vibe is routed to
+ * its closest *unisex* sibling rather than discarded — a floral-romantic pick
+ * becomes mysterious (Imagination); an artistic pick becomes bold (Creation).
+ */
+export const GENDER_REDIRECT: Partial<Record<ProductSlug, ProductSlug>> = {
+  "gucci-gardena": "imagination",
+  symphoniya: "creation",
 }
 
 export const GENDER_QUESTION = {
