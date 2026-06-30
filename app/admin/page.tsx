@@ -5,7 +5,10 @@ import { isAdmin } from "@/providers/services/admin-auth/server"
 import { LoginForm } from "./_components/login-form"
 import { AdminDashboard } from "./_components/admin-dashboard"
 
-export const metadata = { title: "Boshqaruv — FarKhadi" }
+export const metadata = {
+  title: "Boshqaruv",
+  robots: { index: false, follow: false },
+}
 
 export const dynamic = "force-dynamic"
 

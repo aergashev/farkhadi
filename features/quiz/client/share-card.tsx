@@ -28,10 +28,11 @@ export function ShareCard({
   const [busy, setBusy] = useState(false)
 
   // This card renders only client-side (reached via in-app quiz state).
+  // Strip a leading "www." so the printed URL stays clean on the live domain.
   const host =
     typeof window !== "undefined"
-      ? `${window.location.host}/quiz`
-      : "farkhadi.vercel.app/quiz"
+      ? `${window.location.host.replace(/^www\./, "")}/quiz`
+      : "farkhadi.uz/quiz"
 
   async function renderPng(): Promise<{ dataUrl: string; file: File } | null> {
     if (!cardRef.current) return null

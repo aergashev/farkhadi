@@ -1,8 +1,30 @@
+import type { Metadata } from "next"
+
 import { getActiveProducts } from "@/entities/product/data/server/store"
 import { getT } from "@/providers/lib/i18n/server"
 import { ProductGrid } from "../_components/product-grid"
 
 export const dynamic = "force-dynamic"
+
+const CATALOG_DESCRIPTION =
+  "FarKhadi atirlari katalogi — Fransiyadan keltirilgan noyob iforlar to‘plami. Каталог премиальных ароматов FarKhadi."
+
+export const metadata: Metadata = {
+  title: "Katalog",
+  description: CATALOG_DESCRIPTION,
+  alternates: { canonical: "/catalog" },
+  openGraph: {
+    type: "website",
+    url: "/catalog",
+    title: "Katalog — FarKhadi",
+    description: CATALOG_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Katalog — FarKhadi",
+    description: CATALOG_DESCRIPTION,
+  },
+}
 
 export default async function CatalogPage() {
   const products = await getActiveProducts()
