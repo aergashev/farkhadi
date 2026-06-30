@@ -18,13 +18,11 @@ export const metadata: Metadata = {
     url: "/catalog",
     title: "Katalog — FarKhadi",
     description: CATALOG_DESCRIPTION,
-    images: ["/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Katalog — FarKhadi",
     description: CATALOG_DESCRIPTION,
-    images: ["/opengraph-image"],
   },
 }
 

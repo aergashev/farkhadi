@@ -17,13 +17,11 @@ export const metadata: Metadata = {
     url: "/quiz",
     title: "Ifor testi — FarKhadi",
     description: QUIZ_DESCRIPTION,
-    images: ["/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Ifor testi — FarKhadi",
     description: QUIZ_DESCRIPTION,
-    images: ["/opengraph-image"],
   },
 }
 

@@ -12,13 +12,11 @@ export const metadata: Metadata = {
     url: "/about",
     title: "Hadicha haqida — FarKhadi",
     description: ABOUT_DESCRIPTION,
-    images: ["/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Hadicha haqida — FarKhadi",
     description: ABOUT_DESCRIPTION,
-    images: ["/opengraph-image"],
   },
 }
 
